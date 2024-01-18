@@ -15,7 +15,7 @@ export default function ForgotPassword1() {
       <div className="flex justify-center flex-wrap items-center px-6 py-12 max-w-6xl mx-auto">
         <div className="md:w-[87%] lg:w-[40%] mb-12 md:mb-6">
           <img
-            src="https://images.pexels.com/photos/1097456/pexels-photo-1097456.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+            src="https://images.pexels.com/photos/1438834/pexels-photo-1438834.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
             alt="Login page"
             className="w-full rounded-2xl"
           />

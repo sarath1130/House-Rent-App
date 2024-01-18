@@ -1,9 +1,16 @@
 import { useState } from "react";
 import { BsEmojiHeartEyes } from "react-icons/bs";
 import { PiSmileyXEyesBold } from "react-icons/pi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import OAuth from "../components/OAuth";
-
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { db } from "../firebase";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { toast } from "react-toastify";
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -13,12 +20,37 @@ export default function SignUp() {
   });
 
   const { name, email, password } = formData;
+  const navigate = useNavigate();
 
   function onChange(e) {
     setFormData((prevState) => ({
       ...prevState,
       [e.target.id]: e.target.value,
     }));
+  }
+  async function onSubmit(e) {
+    e.preventDefault();
+    try {
+      const auth = getAuth();
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      updateProfile(auth.currentUser, {
+        displayName: name,
+      });
+      const user = userCredential.user;
+      const formDataCopy = { ...formData };
+      delete formDataCopy.password;
+      formDataCopy.timestamp = serverTimestamp();
+
+      await setDoc(doc(db, "users", user.uid), formDataCopy);
+      toast.success("Sign Up was Successfull");
+      navigate("/");
+    } catch (error) {
+      toast.error("Something went wrong with the registration");
+    }
   }
 
   return (
@@ -27,13 +59,16 @@ export default function SignUp() {
       <div className="flex justify-center flex-wrap items-center px-6 py-12 max-w-6xl mx-auto">
         <div className="md:w-[87%] lg:w-[40%] mb-12 md:mb-6">
           <img
-            src="https://images.pexels.com/photos/1097456/pexels-photo-1097456.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+            src="https://images.pexels.com/photos/1438834/pexels-photo-1438834.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
             alt="Login page"
             className="w-full rounded-2xl"
           />
         </div>
         <div className="w-full md:w-[77%] lg:w-[50%] lg:ml-20">
-          <form className="w-full md:w-[100%] lg:w-[100%] m">
+          <form
+            className="w-full md:w-[100%] lg:w-[100%] m"
+            onSubmit={onSubmit}
+          >
             <input
               type="text"
               id="name"
@@ -60,12 +95,12 @@ export default function SignUp() {
                 className="w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out"
               ></input>
               {showPassword ? (
-                <PiSmileyXEyesBold
+                <BsEmojiHeartEyes
                   className="absolute right-3 top-3 text-xl cursor-pointer"
                   onClick={() => setShowPassword((prevState) => !prevState)}
                 />
               ) : (
-                <BsEmojiHeartEyes
+                <PiSmileyXEyesBold
                   className="absolute right-3 top-3 text-xl cursor-pointer"
                   onClick={() => setShowPassword((prevState) => !prevState)}
                 />
@@ -78,7 +113,7 @@ export default function SignUp() {
                   to="/Sign"
                   className="text-red-600 hover:text-red-700 transition duration-200 ease-in-out ml-1"
                 >
-                  Register
+                  Login
                 </Link>
               </p>
               <p>

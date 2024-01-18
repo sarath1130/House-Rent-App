@@ -24,9 +24,9 @@ export default function Sign() {
     <section>
       <h1 className="text-3xl text-center mt-6 font-bold">Sign In</h1>
       <div className="flex justify-center flex-wrap items-center px-6 py-12 max-w-6xl mx-auto">
-        <div className="md:w-[87%] lg:w-[40%] mb-12 md:mb-6">
+        <div className="md:w-[100%] lg:w-[40%] mb-12 md:mb-6">
           <img
-            src="https://images.pexels.com/photos/1097456/pexels-photo-1097456.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+            src="https://images.pexels.com/photos/6852423/pexels-photo-6852423.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
             alt="Login page"
             className="w-full rounded-2xl"
           />
@@ -51,12 +51,12 @@ export default function Sign() {
                 className="w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out"
               ></input>
               {showPassword ? (
-                <PiSmileyXEyesBold
+                <BsEmojiHeartEyes
                   className="absolute right-3 top-3 text-xl cursor-pointer"
                   onClick={() => setShowPassword((prevState) => !prevState)}
                 />
               ) : (
-                <BsEmojiHeartEyes
+                <PiSmileyXEyesBold
                   className="absolute right-3 top-3 text-xl cursor-pointer"
                   onClick={() => setShowPassword((prevState) => !prevState)}
                 />
@@ -67,7 +67,7 @@ export default function Sign() {
                 Don't have a account?
                 <Link
                   to="/SignUp"
-                  className="text-red-600 hover:text-red-700 transition duration-200 ease-in-out ml-1"
+                  className="text-red-600 hover:text-red-800 transition duration-200 ease-in-out ml-1"
                 >
                   Register
                 </Link>
