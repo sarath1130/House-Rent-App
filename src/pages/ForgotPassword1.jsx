@@ -1,12 +1,26 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import OAuth from "../components/OAuth";
-
+import { toast } from "react-toastify";
+import { sendPasswordResetEmail, getAuth } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 export default function ForgotPassword1() {
   const [email, setEmail] = useState("");
+  const navigate = useNavigate();
 
   function onChange(e) {
     setEmail(e.target.value);
+  }
+  async function onSubmit(e) {
+    e.preventDefault();
+    try {
+      const auth = getAuth();
+      await sendPasswordResetEmail(auth, email);
+      toast.success("Email was sent");
+      navigate("/");
+    } catch (error) {
+      toast.error("Could not send reset password");
+    }
   }
 
   return (
@@ -21,7 +35,7 @@ export default function ForgotPassword1() {
           />
         </div>
         <div className="w-full md:w-[77%] lg:w-[50%] lg:ml-20">
-          <form className="w-full md:w-[100%] lg:w-[100%] m">
+          <form onSubmit={onSubmit}>
             <input
               type="email"
               id="email"
@@ -33,7 +47,7 @@ export default function ForgotPassword1() {
 
             <div className="flex justify-between whitespace-nowrap text-sm sm:text-lg">
               <p className="mb-6">
-                Don't have a account?
+                Don't have an account?
                 <Link
                   to="/SignUp"
                   className="text-red-600 hover:text-red-700 transition duration-200 ease-in-out ml-1"
