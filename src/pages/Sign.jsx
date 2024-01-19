@@ -3,6 +3,9 @@ import { BsEmojiHeartEyes } from "react-icons/bs";
 import { PiSmileyXEyesBold } from "react-icons/pi";
 import { Link } from "react-router-dom";
 import OAuth from "../components/OAuth";
+import { signInWithEmailAndPassword, getAuth } from "firebase/auth";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export default function Sign() {
   const [showPassword, setShowPassword] = useState(false);
@@ -12,12 +15,29 @@ export default function Sign() {
   });
 
   const { email, password } = formData;
+  const navigate = useNavigate();
 
   function onChange(e) {
     setFormData((prevState) => ({
       ...prevState,
       [e.target.id]: e.target.value,
     }));
+  }
+  async function onSubmit(e) {
+    e.preventDefault();
+    try {
+      const auth = getAuth();
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      if (userCredential.user) {
+        navigate("/");
+      }
+    } catch (error) {
+      toast.error("Bad user credentials");
+    }
   }
 
   return (
@@ -32,7 +52,7 @@ export default function Sign() {
           />
         </div>
         <div className="w-full md:w-[77%] lg:w-[50%] lg:ml-20">
-          <form className="w-full md:w-[100%] lg:w-[100%] m">
+          <form onSubmit={onSubmit}>
             <input
               type="email"
               id="email"
