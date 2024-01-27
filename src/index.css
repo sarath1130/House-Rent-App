@@ -7,8 +7,8 @@ body {
 }
 .swiper-button-next:after,
 .swiper-button-prev:after {
-  color: rgb(150, 131, 167);
-  height: 30px;
+  color: rgb(49, 49, 50);
+  background-color: rgb(156, 154, 154);
 }
 .swiper-pagination-progressbar .swiper-pagination-progressbar-fill {
   background: #a8dadc !important;
