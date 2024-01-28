@@ -82,7 +82,7 @@ export default function Listing() {
         </p>
       )}
       <div className="m-4 flex flex-col md:flex-row max-w-6xl lg:mx-auto p-4 rounded-lg shadow-lg bg-white lg:space-x-5">
-        <div className=" w-full">
+        <div className="w-full">
           <p className="text-2xl font-bold mb-3 text-red-700">
             {listing.name} - $
             {listing.offer
@@ -146,6 +146,11 @@ export default function Listing() {
           {contactLandLord && (
             <Contact userRef={listing.userRef} listing={listing} />
           )}
+          <img
+            src="https://images.pexels.com/photos/950058/pexels-photo-950058.jpeg?auto=compress&cs=tinysrgb&w=600"
+            alt="home"
+            className="h-[250px] w-[500px]"
+          ></img>
         </div>
         <div className="w-full h-[200px] md:h-[400px] z-10 overflow-x-hidden mt-6 md:mt-0 md:ml-2">
           {/* const position = [51.505, -0.09] render(
@@ -156,15 +161,20 @@ export default function Listing() {
             />
             <Marker position={position}>
               <Popup>
-                A pretty CSS3 popup. <br /> Easily customizable.
+              
               </Popup>
             </Marker>
           </MapContainer>
           ) */}
+
           <img
             src="https://www.mapsofindia.com/maps/andhrapradesh/vijayawada-city-map.jpg"
             alt="map"
           />
+          <p className="flex items-center mt-6 mb-3 font-semibold ">
+            <FaMapMarkerAlt className="text-green-700 mr-1" />
+            {listing.address}
+          </p>
         </div>
       </div>
     </main>
