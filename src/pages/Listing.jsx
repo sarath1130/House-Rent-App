@@ -9,6 +9,7 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 import { FaBedPulse } from "react-icons/fa6";
 import { MdOutlineBathtub } from "react-icons/md";
 import { FaParking, FaChair } from "react-icons/fa";
+import Contact from "../components/Contact";
 
 import SwiperCore, {
   EffectFade,
@@ -17,12 +18,15 @@ import SwiperCore, {
   Pagination,
 } from "swiper";
 import "swiper/css/bundle";
+import { getAuth } from "firebase/auth";
 
 export default function Listing() {
+  const auth = getAuth();
   const params = useParams();
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(true);
   const [shareLinkCopied, setShareLinkCopied] = useState(false);
+  const [contactLandLord, setContactLandLord] = useState(false);
   SwiperCore.use([Autoplay, Navigation, Pagination]);
   useEffect(() => {
     async function fetchListing() {
@@ -78,11 +82,11 @@ export default function Listing() {
         </p>
       )}
       <div className="m-4 flex flex-col md:flex-row max-w-6xl lg:mx-auto p-4 rounded-lg shadow-lg bg-white lg:space-x-5">
-        <div className=" w-full h-[200px] lg-[400px]">
+        <div className=" w-full">
           <p className="text-2xl font-bold mb-3 text-red-700">
-            {listing.name}- $
+            {listing.name} - $
             {listing.offer
-              ? listing.discountedPrice
+              ? (listing.regularPrice - listing.discountedPrice)
                   .toString()
                   .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
               : listing.regularPrice
@@ -103,7 +107,7 @@ export default function Listing() {
             </p>
             {listing.offer && (
               <p className="w-full max-w-[200px] bg-green-800 rounded-md p-1 text-white text-center font-semibold shadow-md">
-                ${+listing.regularPrice - +listing.discountedPrice} discount
+                ${+listing.discountedPrice} Discount
               </p>
             )}
           </div>
@@ -111,7 +115,7 @@ export default function Listing() {
             <span className="font-semibold ">Description - </span>
             {listing.description}
           </p>
-          <ul className="flex items-center space-x-2 text-sm font-semibold sm:space-x-10">
+          <ul className="flex items-center space-x-2 text-sm font-semibold sm:space-x-10 mb-6">
             <li className="flex items-center whitespace-nowrap">
               <FaBedPulse className="text-lg mr-1" />
               {+listing.bedrooms > 1 ? `${listing.bedrooms}Beds` : "1 Bed"}
@@ -129,8 +133,39 @@ export default function Listing() {
               {listing.furnished ? "Furnished" : "Not Furnished"}
             </li>
           </ul>
+          {listing.userRef !== auth.currentUser?.uid && !contactLandLord && (
+            <div className="mt-6">
+              <button
+                onClick={() => setContactLandLord(true)}
+                className="px-7 py-3 bg-blue-600 text-white font-medium text-sm uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg w-full text-center transition duration-150 ease-in-out "
+              >
+                Contact Landlord
+              </button>
+            </div>
+          )}
+          {contactLandLord && (
+            <Contact userRef={listing.userRef} listing={listing} />
+          )}
         </div>
-        <div className="bg-blue-300 w-full h-[200px] lg-[400px] z-10 overflow-x-hidden"></div>
+        <div className="w-full h-[200px] md:h-[400px] z-10 overflow-x-hidden mt-6 md:mt-0 md:ml-2">
+          {/* const position = [51.505, -0.09] render(
+          <MapContainer center={position} zoom={13} scrollWheelZoom={false}>
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <Marker position={position}>
+              <Popup>
+                A pretty CSS3 popup. <br /> Easily customizable.
+              </Popup>
+            </Marker>
+          </MapContainer>
+          ) */}
+          <img
+            src="https://www.mapsofindia.com/maps/andhrapradesh/vijayawada-city-map.jpg"
+            alt="map"
+          />
+        </div>
       </div>
     </main>
   );
