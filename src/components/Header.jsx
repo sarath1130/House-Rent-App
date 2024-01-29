@@ -37,7 +37,7 @@ export default function Header() {
         <div>
           <ul className="flex space-x-10">
             <li
-              className={` cursor-pointer py-6-3 text-sm font-semibold text-gray-500 border-b-[3px] border-b-transparent ${
+              className={` cursor-pointer py-3 text-sm font-semibold text-gray-500 border-b-[3px] border-b-transparent ${
                 pathMatchRoute("/") && "text-black border-b-yellow-600"
               }`}
               onClick={() => navigate("/")}
@@ -45,7 +45,7 @@ export default function Header() {
               Home
             </li>
             <li
-              className={`cursor-pointer py-6-3 text-sm font-semibold text-gray-500 border-b-[3px] border-b-transparent ${
+              className={`cursor-pointer py-3 text-sm font-semibold text-gray-500 border-b-[3px] border-b-transparent ${
                 pathMatchRoute("/Offers") && "text-black border-b-yellow-600"
               }`}
               onClick={() => navigate("/Offers")}
@@ -53,7 +53,7 @@ export default function Header() {
               Offers
             </li>
             <li
-              className={`cursor-pointer py-6-3 text-sm font-semibold text-gray-500 border-b-[3px] border-b-transparent ${
+              className={`cursor-pointer py-3 text-sm font-semibold text-gray-500 border-b-[3px] border-b-transparent ${
                 pathMatchRoute("/Sign") ||
                 (pathMatchRoute("/Profile") && "text-black border-b-yellow-600")
               }`}
